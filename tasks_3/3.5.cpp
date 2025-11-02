@@ -167,13 +167,13 @@ class Vector {
       vec_->is_blocked = false;
     }
 
-    const double* AcquireBuffer() const {
+    const double* AcquireConstBuffer() const {
       assert(!vec_->is_blocked && "Cannot acquire const buffer of a blocked vector!");
       vec_->is_blocked = true;
       return vec_->data_->data;
     }
 
-    void ReleaseBuffer() const {
+    void ReleaseConstBuffer() const {
       vec_->is_blocked = false;
     }
   };
@@ -227,9 +227,9 @@ int main() {
   Vector::ConstBuffer cbuffer = Vector::ConstBuffer(&vec);
   vec.Print();
 
-  const double* d2 = cbuffer.AcquireBuffer();
+  const double* d2 = cbuffer.AcquireConstBuffer();
   // d2[0] = -10; -- error
   vec.Print();
   // vec[3] = 1; -- assert
-  buffer.ReleaseBuffer();
+  cbuffer.ReleaseConstBuffer();
 }
